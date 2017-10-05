@@ -1,5 +1,12 @@
 import React from 'react';
-import { AppRegistry, StyleSheet, Text, ScrollView, View } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
+import Square from './Square';
 
 export class Home extends React.Component {
   constructor(props) {
@@ -27,50 +34,33 @@ export class Home extends React.Component {
   }
 
   getSquares(): array<React.Component> {
-    return [
-      this.getLeftSquare(),
-      this.getCenterSquare(),
-      this.getRightSquare(),
-      this.getLeftSquare(),
-      this.getCenterSquare(),
-      this.getRightSquare(),
+    const contents = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const stylesArray = [
+      styles.leftSquare,
+      styles.centerSquare,
+      styles.rightSquare,
     ];
-  }
+    let stylePointer = 0;
+    let delta = 1;
 
-  getLeftSquare(): React.Component {
-    return (
-      <View style={styles.squarerow}>
-        <View style={styles.leftsquare}>
-          <View style={styles.square}>
-            <Text>Aligned to the left</Text>
+    let squares = [];
+    for (content of contents) {
+      squares.push(
+        <View style={styles.squareRow}>
+          <View style={stylesArray[stylePointer]}>
+            <Square>
+              <Text>{content}</Text>
+            </Square>
           </View>
         </View>
-      </View>
-    );
-  }
+      );
+      if (stylePointer + delta > 2 || stylePointer + delta < 0) {
+        delta *= -1;
+      }
+      stylePointer += delta;
+    }
 
-  getCenterSquare(): React.Component {
-    return (
-      <View style={styles.squarerow}>
-        <View style={styles.centersquare}>
-          <View style={styles.square}>
-            <Text>Aligned to the center</Text>
-          </View>
-        </View>
-      </View>
-    );
-  }
-
-  getRightSquare(): React.Component {
-    return (
-      <View style={styles.squarerow}>
-        <View style={styles.rightsquare}>
-          <View style={styles.square}>
-            <Text>Aligned to the right</Text>
-          </View>
-        </View>
-      </View>
-    );
+    return squares;
   }
 }
 
@@ -87,29 +77,23 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginBottom: 40,
   },
-  squarerow: {
+  squareRow: {
     flexDirection: 'row',
     width: '100%',
     height: 224,
     paddingHorizontal: 24,
   },
-  leftsquare: {
+  leftSquare: {
     alignItems: 'flex-start',
     width: '100%',
   },
-  centersquare: {
+  centerSquare: {
     alignItems: 'center',
     width: '100%',
   },
-  rightsquare: {
+  rightSquare: {
     alignItems: 'flex-end',
     width: '100%',
-  },
-  square: {
-    width: 200,
-    height: 200,
-    borderWidth: 1,
-    borderColor: '#000000',
   },
 });
 
