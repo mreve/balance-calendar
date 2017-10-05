@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import Square from './Square';
+import TodaysDateSquare from './TodaysDateSquare';
 
 export class Home extends React.Component {
   constructor(props) {
@@ -34,7 +35,15 @@ export class Home extends React.Component {
   }
 
   getSquares(): array<React.Component> {
-    const contents = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    const contents = Array(9).fill(
+      <TodaysDateSquare
+        day={this.state.day}
+        weekday={this.state.weekday}
+        month={this.state.month}
+        year={this.state.year}
+      />,
+    );
     const stylesArray = [
       styles.leftSquare,
       styles.centerSquare,
@@ -44,12 +53,12 @@ export class Home extends React.Component {
     let delta = 1;
 
     let squares = [];
-    for (content of contents) {
+    for (let i = 0; i < contents.length; i++) {
       squares.push(
-        <View style={styles.squareRow}>
+        <View style={styles.squareRow} key={i}>
           <View style={stylesArray[stylePointer]}>
             <Square>
-              <Text>{content}</Text>
+              {contents[i]}
             </Square>
           </View>
         </View>
