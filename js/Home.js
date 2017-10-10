@@ -5,19 +5,22 @@ import {
   Text,
   View,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Entypo';
 
+import {get_full_month, get_full_day_of_week} from './utils/DateUtils';
+import HomeHeader from './HomeHeader';
 import Square from './Square';
 import TodaysDateSquare from './TodaysDateSquare';
 
 export class Home extends React.Component {
   constructor(props) {
     super(props);
+    let today = new Date();
     this.state = {
-      month: 'September',
-      day: '26',
-      weekday: 'Thursday',
-      year: '2018',
+      selectedDate: today,
     };
+    this.onTapPrevious = this.onTapPrevious.bind(this);
+    this.onTapNext = this.onTapNext.bind(this);
   }
 
   render() {
@@ -25,7 +28,12 @@ export class Home extends React.Component {
     return (
       <ScrollView>
         <View style={styles.container}>
-          <Text style={styles.month}>{this.state.month}</Text>
+          <HomeHeader
+            month={get_full_month(this.state.selectedDate)}
+            selectedDate={this.state.selectedDate}
+            onTapPrevious={this.onTapPrevious}
+            onTapNext={this.onTapNext}
+          />
           <View style={styles.squarelist}>
             {squares}
           </View>
@@ -34,14 +42,25 @@ export class Home extends React.Component {
     );
   }
 
-  getSquares(): array<React.Component> {
+  onTapPrevious() {
+    let previousDay = new Date(this.state.selectedDate);
+    previousDay.setDate(this.state.selectedDate.getDate() - 1);
+    this.setState({selectedDate: previousDay});
+  }
 
+  onTapNext() {
+    let previousDay = new Date(this.state.selectedDate);
+    previousDay.setDate(this.state.selectedDate.getDate() + 1);
+    this.setState({selectedDate: previousDay});
+  }
+
+  getSquares(): array<React.Component> {
     const contents = Array(9).fill(
       <TodaysDateSquare
-        day={this.state.day}
-        weekday={this.state.weekday}
-        month={this.state.month}
-        year={this.state.year}
+        day={this.state.selectedDate.getUTCDate()}
+        weekday={get_full_day_of_week(this.state.selectedDate)}
+        month={get_full_month(this.state.selectedDate)}
+        year={this.state.selectedDate.getUTCFullYear()}
       />,
     );
     const stylesArray = [
@@ -81,10 +100,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     width: '100%',
     paddingTop: 30,
-  },
-  month: {
-    fontSize: 30,
-    marginBottom: 40,
   },
   squareRow: {
     flexDirection: 'row',
