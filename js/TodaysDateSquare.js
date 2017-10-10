@@ -14,9 +14,9 @@ export class TodaysDateSquare extends React.Component {
           <View style={styles.dateRow}>
             <Text style={styles.day}>{this.props.day}</Text>
             <Text style={styles.dayDot}>·</Text>
-            <View>
+            <View style={styles.monthYearContainer}>
               <Text style={styles.monthYear}>
-                {this.props.month.slice(0, 4).toUpperCase()}
+                {this.props.month.slice(0, 3).toUpperCase()}
               </Text>
               <Text style={styles.monthYear}>{this.props.year}</Text>
             </View>
@@ -56,6 +56,9 @@ const styles = StyleSheet.create({
   },
   monthYear: {
     fontSize: 24,
+  },
+  monthYearContainer: {
+    alignItems: 'center',
   },
   footer: {
     borderTopColor: '#ff7230',
