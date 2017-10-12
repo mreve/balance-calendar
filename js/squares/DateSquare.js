@@ -5,7 +5,7 @@ import {
   View,
 } from 'react-native';
 
-export class TodaysDateSquare extends React.Component {
+export class DateSquare extends React.Component {
   render() {
     return (
       <View style={styles.content}>
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = TodaysDateSquare;
+module.exports = DateSquare;
