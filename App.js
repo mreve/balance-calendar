@@ -1,27 +1,19 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {StackNavigator} from 'react-navigation';
 
 import Home from './js/Home';
+import MoodScreen from './js/screens/MoodScreen'
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Home />
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const App = StackNavigator(
+  {
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    Mood: { screen: MoodScreen },
   },
-});
+);
+
+module.exports = App;
