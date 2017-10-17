@@ -1,110 +1,137 @@
 import React from 'react';
 import {
+  Dimensions,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
+import Carousel from 'react-native-looped-carousel';
 import Icon from 'react-native-vector-icons/Entypo';
 
-import {get_full_month, get_full_day_of_week} from './utils/DateUtils';
-
 import AppView from './AppView';
+import DateUtils from './utils/DateUtils';
 import HomeHeader from './HomeHeader';
-import Square from './squares/Square';
-import DateSquare from './squares/DateSquare';
-import MoodSquare from './squares/MoodSquare';
-import HabitsSquare from './squares/HabitsSquare';
-import TasksSquare from './squares/TasksSquare';
-import SleepSquare from './squares/SleepSquare';
-import HydrationSquare from './squares/HydrationSquare';
+import SquaresList from './SquaresList';
 
-export class Home extends React.Component {
+const { width, height } = Dimensions.get('window');
+const CAROUSEL_SIZE = 7;
+
+export default class Home extends React.Component {
   constructor(props) {
     super(props);
-    let today = new Date();
+    const today = new Date();
+    const selectedPage = Math.floor(CAROUSEL_SIZE / 2);
+    const datesOnPages = DateUtils.getSurroundingDates(
+      CAROUSEL_SIZE,
+      today,
+      selectedPage,
+    );
+    console.log(datesOnPages);
     this.state = {
       selectedDate: today,
+      selectedPage: selectedPage,
+      datesOnPages: datesOnPages,
     };
-    this.onTapPrevious = this.onTapPrevious.bind(this);
-    this.onTapNext = this.onTapNext.bind(this);
+    this.onCarouselScroll = this.onCarouselScroll.bind(this);
   }
 
   render() {
-    let squares = this.getSquares();
+    const navigation = this.props.navigation;
+    const carouselElements = this.state.datesOnPages.map(
+      function(date) {
+        return (
+          <SquaresList
+            selectedDate={date}
+            navigation={navigation}
+            key={date}
+          />
+        );
+      },
+    );
+
     return (
       <AppView>
         <ScrollView>
           <View style={styles.container}>
             <HomeHeader
-              month={get_full_month(this.state.selectedDate)}
+              month={DateUtils.getFullMonth(this.state.selectedDate)}
               selectedDate={this.state.selectedDate}
-              onTapPrevious={this.onTapPrevious}
-              onTapNext={this.onTapNext}
             />
-            <View style={styles.squarelist}>
-              {squares}
-            </View>
+            <Carousel
+              delay={2000}
+              style={styles.squaresList}
+              autoplay={false}
+              pageInfo={false}
+              onAnimateNextPage={(pageID) => this.onCarouselScroll(pageID)}
+              currentPage={this.state.selectedPage}
+            >
+              {carouselElements}
+
+            </Carousel>
           </View>
         </ScrollView>
       </AppView>
     );
   }
 
-  onTapPrevious() {
-    let previousDay = new Date(this.state.selectedDate);
-    previousDay.setDate(this.state.selectedDate.getDate() - 1);
-    this.setState({selectedDate: previousDay});
-  }
+  onCarouselScroll(
+    pageID: number,
+  ) {
+    const currentPageID = this.state.selectedPage;
+    const nextPageID = pageID;
+    console.log('changing', currentPageID, 'to', nextPageID);
 
-  onTapNext() {
-    let previousDay = new Date(this.state.selectedDate);
-    previousDay.setDate(this.state.selectedDate.getDate() + 1);
-    this.setState({selectedDate: previousDay});
-  }
-
-  getSquares(): array<React.Component> {
-    const contents = [
-      <DateSquare
-        day={this.state.selectedDate.getUTCDate()}
-        weekday={get_full_day_of_week(this.state.selectedDate)}
-        month={get_full_month(this.state.selectedDate)}
-        year={this.state.selectedDate.getUTCFullYear()}
-      />,
-      <MoodSquare
-        navigation={this.props.navigation}
-      />,
-      <HabitsSquare />,
-      <TasksSquare />,
-      <SleepSquare />,
-      <HydrationSquare />,
-    ];
-    const stylesArray = [
-      styles.leftSquare,
-      styles.centerSquare,
-      styles.rightSquare,
-    ];
-    let stylePointer = 0;
-    let delta = 1;
-
-    let squares = [];
-    for (let i = 0; i < contents.length; i++) {
-      squares.push(
-        <View style={styles.squareRow} key={i}>
-          <View style={stylesArray[stylePointer]}>
-            <Square>
-              {contents[i]}
-            </Square>
-          </View>
-        </View>
-      );
-      if (stylePointer + delta > 2 || stylePointer + delta < 0) {
-        delta *= -1;
-      }
-      stylePointer += delta;
+    // Unfinished scrolling
+    if (currentPageID === nextPageID) {
+      return;
     }
 
-    return squares;
+    let selectedDate;
+    let datesOnPages = [...this.state.datesOnPages];
+    if (
+      (
+        currentPageID > nextPageID &&
+        !(currentPageID === CAROUSEL_SIZE - 1 && nextPageID === 0)
+      ) ||
+      (currentPageID === 0 && nextPageID === CAROUSEL_SIZE - 1)
+    ) {
+      // Swipe left
+      console.log('swipe left');
+      selectedDate = DateUtils.getPreviousDay(this.state.selectedDate);
+      console.log('new selected date:', selectedDate);
+
+      const latestDatePosition = nextPageID - Math.floor(CAROUSEL_SIZE / 2);
+      const latestDayPageID = latestDatePosition < 0
+        ? CAROUSEL_SIZE + latestDatePosition
+        : latestDatePosition;
+      datesOnPages[latestDayPageID] = DateUtils.getDayRelative(
+        selectedDate,
+        -Math.floor(CAROUSEL_SIZE / 2),
+      );
+    } else {
+      // Swipe right
+      console.log('swipe right');
+      selectedDate = DateUtils.getNextDay(this.state.selectedDate);
+      console.log('new selected date:', selectedDate);
+
+      const earliestDayPosition = nextPageID + Math.floor(CAROUSEL_SIZE / 2);
+      const earliestDayPageID = earliestDayPosition > CAROUSEL_SIZE - 1
+        ? earliestDayPosition - CAROUSEL_SIZE
+        : earliestDayPosition;
+      datesOnPages[earliestDayPageID] = DateUtils.getDayRelative(
+        selectedDate,
+        Math.floor(CAROUSEL_SIZE / 2),
+      );
+    }
+
+    console.log('old dates:', this.state.datesOnPages);
+    console.log('new dates:', datesOnPages);
+
+    this.setState({
+      selectedPage: nextPageID,
+      selectedDate: selectedDate,
+      datesOnPages: datesOnPages,
+    });
   }
 }
 
@@ -114,27 +141,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFDEC0',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    width: '100%',
+    width: width,
     paddingTop: 30,
   },
-  squareRow: {
-    flexDirection: 'row',
-    width: '100%',
-    height: 224,
-    paddingHorizontal: 24,
-  },
-  leftSquare: {
-    alignItems: 'flex-start',
-    width: '100%',
-  },
-  centerSquare: {
-    alignItems: 'center',
-    width: '100%',
-  },
-  rightSquare: {
-    alignItems: 'flex-end',
-    width: '100%',
+  squaresList: {
+    width: width,
+    height: (224 + 24) * 6, // Substract header
   },
 });
-
-module.exports = Home;
