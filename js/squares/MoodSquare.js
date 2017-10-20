@@ -12,7 +12,11 @@ export class MoodSquare extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <TouchableHighlight onPress={() => navigate('Mood')}>
+        <TouchableHighlight
+          onPress={() => navigate(
+            'Mood',
+            {selectedDate: this.props.selectedDate},
+          )}>
           <View style={styles.innerContainer}>
             <View style={styles.content}>
               <Text style={styles.text}>How{'\''}s your</Text>

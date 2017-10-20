@@ -19,27 +19,6 @@ import TasksSquare from './squares/TasksSquare';
 const { width, height } = Dimensions.get('window');
 
 export default class SquaresList extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //
-  //   let date = new Date(this.props.selectedDate);
-  //   if (this.props.initialDateDelta === 1) {
-  //     date = DateUtils.getNextDay(date);
-  //   } else if (this.props.initialDateDelta === -1) {
-  //     date = DateUtils.getPreviousDay(date);
-  //   }
-  //
-  //   this.state = {
-  //     selectedDate: date,
-  //   };
-  // }
-  //
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({
-  //     selectedDate: nextProps.selectedDate,
-  //   });
-  // }
-
   render() {
     let squares = this.getSquares();
     return (
@@ -59,6 +38,7 @@ export default class SquaresList extends React.Component {
       />,
       <MoodSquare
         navigation={this.props.navigation}
+        selectedDate={this.props.selectedDate}
       />,
       <HabitsSquare />,
       <TasksSquare />,
