@@ -1,10 +1,16 @@
+// @flow
+
 import React from 'react';
 import {
   StyleSheet,
   View,
 } from 'react-native';
 
-export default class AppView extends React.Component {
+type Props = {
+  children: any,
+};
+
+export default class AppView extends React.Component<void, Props, void> {
   render() {
     return (
       <View style={styles.container}>

@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import {
   StyleSheet,
@@ -6,7 +8,11 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 
-export default class HomeHeader extends React.Component {
+type Props = {
+  month: string,
+};
+
+export default class HomeHeader extends React.Component<void, Props, void> {
   render() {
     return (
       <View style={styles.header}>

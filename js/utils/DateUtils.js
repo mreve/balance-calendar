@@ -1,3 +1,5 @@
+// @flow
+
 export default class DateUtils {
   static getFullMonth(
     date: Date,
@@ -92,7 +94,7 @@ export default class DateUtils {
     return '' +
       date.getFullYear() +
       '-' +
-      date.getFullMonth() +
+      date.getMonth() +
       '-' +
       date.getDate();
   }

@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import {
   Image,
@@ -10,14 +12,23 @@ import Slider from 'react-native-slider';
 import AppView from './../AppView';
 import DateUtils from './../utils/DateUtils';
 
-export class MoodScreen extends React.Component {
+type Props = {
+  navigation: Object,
+};
+type State = {
+  moodValue: ?number,
+  selectedDate: Date,
+};
+
+export default class MoodScreen extends React.Component<void, Props, State> {
+  state: State;
+
   static navigationOptions = {
     title: 'Mood Screen'
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
-    console.log(this.props.navigation.state.params.selectedDate);
     this.state = {
       moodValue: null,
       selectedDate: this.props.navigation.state.params.selectedDate,
@@ -47,7 +58,7 @@ export class MoodScreen extends React.Component {
               style={styles.icon}
             />
             <Text>
-              {this.state.moodValue !== null
+              {this.state.moodValue != null
                 ? this.state.moodValue + '%'
                 : 'Move the slider'}
             </Text>
@@ -90,5 +101,3 @@ const styles = StyleSheet.create({
     width: 200,
   },
 });
-
-module.exports = MoodScreen;

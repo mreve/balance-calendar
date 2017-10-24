@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import {
   Image,
@@ -7,7 +9,12 @@ import {
   View,
 } from 'react-native';
 
-export class MoodSquare extends React.Component {
+type Props = {
+  navigation: Object,
+  selectedDate: Date,
+};
+
+export default class MoodSquare extends React.Component<void, Props, void> {
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -71,5 +78,3 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
 });
-
-module.exports = MoodSquare;

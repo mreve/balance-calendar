@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import {
   StyleSheet,
@@ -5,7 +7,7 @@ import {
   View,
 } from 'react-native';
 
-export class TasksSquare extends React.Component {
+export default class TasksSquare extends React.Component<void, {}, void> {
   render() {
     return (
       <View style={styles.content}>
@@ -21,5 +23,3 @@ const styles = StyleSheet.create({
     height: 174,
   },
 });
-
-module.exports = TasksSquare;

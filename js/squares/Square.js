@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import {
   StyleSheet,
@@ -5,7 +7,11 @@ import {
   View,
 } from 'react-native';
 
-export class Square extends React.Component {
+type Props = {
+  children: any,
+};
+
+export default class Square extends React.Component<void, Props, void> {
   render() {
     return (
       <View style={styles.square}>
@@ -31,5 +37,3 @@ const styles = StyleSheet.create({
     color: '#ff7230',
   },
 });
-
-module.exports = Square;

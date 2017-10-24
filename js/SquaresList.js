@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import {
   Dimensions,
@@ -18,7 +20,12 @@ import TasksSquare from './squares/TasksSquare';
 
 const { width, height } = Dimensions.get('window');
 
-export default class SquaresList extends React.Component {
+type Props = {
+  navigation: Object,
+  selectedDate: Date,
+};
+
+export default class SquaresList extends React.Component<void, Props, void> {
   render() {
     let squares = this.getSquares();
     return (
@@ -28,7 +35,7 @@ export default class SquaresList extends React.Component {
     );
   }
 
-  getSquares(): array<React.Component> {
+  getSquares(): Array<React.Element<*>> {
     const contents = [
       <DateSquare
         day={this.props.selectedDate.getDate()}
