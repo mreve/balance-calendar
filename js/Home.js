@@ -26,7 +26,6 @@ export default class Home extends React.Component {
       today,
       selectedPage,
     );
-    console.log(datesOnPages);
     this.state = {
       selectedDate: today,
       selectedPage: selectedPage,
@@ -79,7 +78,6 @@ export default class Home extends React.Component {
   ) {
     const currentPageID = this.state.selectedPage;
     const nextPageID = pageID;
-    console.log('changing', currentPageID, 'to', nextPageID);
 
     // Unfinished scrolling
     if (currentPageID === nextPageID) {
@@ -96,9 +94,7 @@ export default class Home extends React.Component {
       (currentPageID === 0 && nextPageID === CAROUSEL_SIZE - 1)
     ) {
       // Swipe left
-      console.log('swipe left');
       selectedDate = DateUtils.getPreviousDay(this.state.selectedDate);
-      console.log('new selected date:', selectedDate);
 
       const latestDatePosition = nextPageID - Math.floor(CAROUSEL_SIZE / 2);
       const latestDayPageID = latestDatePosition < 0
@@ -110,9 +106,7 @@ export default class Home extends React.Component {
       );
     } else {
       // Swipe right
-      console.log('swipe right');
       selectedDate = DateUtils.getNextDay(this.state.selectedDate);
-      console.log('new selected date:', selectedDate);
 
       const earliestDayPosition = nextPageID + Math.floor(CAROUSEL_SIZE / 2);
       const earliestDayPageID = earliestDayPosition > CAROUSEL_SIZE - 1
@@ -123,9 +117,6 @@ export default class Home extends React.Component {
         Math.floor(CAROUSEL_SIZE / 2),
       );
     }
-
-    console.log('old dates:', this.state.datesOnPages);
-    console.log('new dates:', datesOnPages);
 
     this.setState({
       selectedPage: nextPageID,

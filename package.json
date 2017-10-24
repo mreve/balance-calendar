@@ -25,7 +25,9 @@
     "react-native": "^0.48.4",
     "react-native-icons": "^0.7.1",
     "react-native-looped-carousel": "^0.1.7",
+    "react-native-slider": "^0.11.0",
     "react-native-vector-icons": "^4.4.2",
-    "react-navigation": "^1.0.0-beta.13"
+    "react-navigation": "^1.0.0-beta.13",
+    "realm": "^2.0.0"
   }
 }

@@ -85,4 +85,15 @@ export default class DateUtils {
 
     return dates;
   }
+
+  static getDateKey(
+    date: Date,
+  ): string {
+    return '' +
+      date.getFullYear() +
+      '-' +
+      date.getFullMonth() +
+      '-' +
+      date.getDate();
+  }
 }
