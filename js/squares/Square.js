@@ -7,7 +7,6 @@ import {
 
 export class Square extends React.Component {
   render() {
-
     return (
       <View style={styles.square}>
         <Text style={styles.text}>

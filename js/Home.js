@@ -9,8 +9,13 @@ import Icon from 'react-native-vector-icons/Entypo';
 
 import {get_full_month, get_full_day_of_week} from './utils/DateUtils';
 import HomeHeader from './HomeHeader';
-import Square from './Square';
-import TodaysDateSquare from './TodaysDateSquare';
+import Square from './squares/Square';
+import DateSquare from './squares/DateSquare';
+import MoodSquare from './squares/MoodSquare';
+import HabitsSquare from './squares/HabitsSquare';
+import TasksSquare from './squares/TasksSquare';
+import SleepSquare from './squares/SleepSquare';
+import HydrationSquare from './squares/HydrationSquare';
 
 export class Home extends React.Component {
   constructor(props) {
@@ -55,14 +60,19 @@ export class Home extends React.Component {
   }
 
   getSquares(): array<React.Component> {
-    const contents = Array(9).fill(
-      <TodaysDateSquare
+    const contents = [
+      <DateSquare
         day={this.state.selectedDate.getUTCDate()}
         weekday={get_full_day_of_week(this.state.selectedDate)}
         month={get_full_month(this.state.selectedDate)}
         year={this.state.selectedDate.getUTCFullYear()}
       />,
-    );
+      <MoodSquare />,
+      <HabitsSquare />,
+      <TasksSquare />,
+      <SleepSquare />,
+      <HydrationSquare />,
+    ];
     const stylesArray = [
       styles.leftSquare,
       styles.centerSquare,
