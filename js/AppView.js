@@ -4,7 +4,7 @@ import {
   View,
 } from 'react-native';
 
-export class AppView extends React.Component {
+export default class AppView extends React.Component {
   render() {
     return (
       <View style={styles.container}>
@@ -22,5 +22,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-module.exports = AppView;
