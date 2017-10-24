@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import {
   Dimensions,
@@ -5,7 +7,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import Carousel from 'react-native-looped-carousel';
+import Carousel from 'react-native-looped-carousel-improved';
 import Icon from 'react-native-vector-icons/Entypo';
 
 import AppView from './AppView';
@@ -16,8 +18,19 @@ import SquaresList from './SquaresList';
 const { width, height } = Dimensions.get('window');
 const CAROUSEL_SIZE = 7;
 
-export default class Home extends React.Component {
-  constructor(props) {
+type Props = {
+  navigation: Object,
+};
+type State = {
+  selectedDate: Date,
+  selectedPage: number,
+  datesOnPages: Array<Date>,
+};
+
+export default class Home extends React.Component<void, Props, State> {
+  state: State;
+
+  constructor(props: Props) {
     super(props);
     const today = new Date();
     const selectedPage = Math.floor(CAROUSEL_SIZE / 2);
@@ -62,10 +75,8 @@ export default class Home extends React.Component {
               autoplay={false}
               pageInfo={false}
               onAnimateNextPage={(pageID) => this.onCarouselScroll(pageID)}
-              currentPage={this.state.selectedPage}
-            >
+              currentPage={this.state.selectedPage}>
               {carouselElements}
-
             </Carousel>
           </View>
         </ScrollView>
@@ -73,7 +84,7 @@ export default class Home extends React.Component {
     );
   }
 
-  onCarouselScroll(
+  onCarouselScroll = function (
     pageID: number,
   ) {
     const currentPageID = this.state.selectedPage;

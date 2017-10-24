@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import {
   StyleSheet,
@@ -5,7 +7,14 @@ import {
   View,
 } from 'react-native';
 
-export class DateSquare extends React.Component {
+type Props = {
+  day: number,
+  weekday: string,
+  month: string,
+  year: number,
+};
+
+export default class DateSquare extends React.Component<void, Props, void> {
   render() {
     return (
       <View style={styles.content}>
@@ -67,5 +76,3 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 });
-
-module.exports = DateSquare;
