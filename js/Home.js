@@ -8,6 +8,8 @@ import {
 import Icon from 'react-native-vector-icons/Entypo';
 
 import {get_full_month, get_full_day_of_week} from './utils/DateUtils';
+
+import AppView from './AppView';
 import HomeHeader from './HomeHeader';
 import Square from './squares/Square';
 import DateSquare from './squares/DateSquare';
@@ -31,19 +33,21 @@ export class Home extends React.Component {
   render() {
     let squares = this.getSquares();
     return (
-      <ScrollView>
-        <View style={styles.container}>
-          <HomeHeader
-            month={get_full_month(this.state.selectedDate)}
-            selectedDate={this.state.selectedDate}
-            onTapPrevious={this.onTapPrevious}
-            onTapNext={this.onTapNext}
-          />
-          <View style={styles.squarelist}>
-            {squares}
+      <AppView>
+        <ScrollView>
+          <View style={styles.container}>
+            <HomeHeader
+              month={get_full_month(this.state.selectedDate)}
+              selectedDate={this.state.selectedDate}
+              onTapPrevious={this.onTapPrevious}
+              onTapNext={this.onTapNext}
+            />
+            <View style={styles.squarelist}>
+              {squares}
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </AppView>
     );
   }
 
@@ -67,7 +71,9 @@ export class Home extends React.Component {
         month={get_full_month(this.state.selectedDate)}
         year={this.state.selectedDate.getUTCFullYear()}
       />,
-      <MoodSquare />,
+      <MoodSquare
+        navigation={this.props.navigation}
+      />,
       <HabitsSquare />,
       <TasksSquare />,
       <SleepSquare />,
