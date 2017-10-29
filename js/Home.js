@@ -84,7 +84,7 @@ export default class Home extends React.Component<void, Props, State> {
     );
   }
 
-  onCarouselScroll = function (
+  onCarouselScroll = function(
     pageID: number,
   ) {
     const currentPageID = this.state.selectedPage;
