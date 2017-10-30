@@ -53,7 +53,11 @@ export default class IconUtils {
       case MOOD.MEH: return require('./../../img/meh.png');
       case MOOD.GLOOMY: return require('./../../img/gloomy.png');
       case MOOD.MISERABLE: return require('./../../img/miserable.png');
-      default: throw new Error('No icon for given mood name');
+      default: throw new Error('No icon for given mood name: ' + name);
     }
+  }
+
+  static getMoods(): Array<any> {
+    return Object.values(MOOD).reverse();
   }
 }
