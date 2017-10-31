@@ -6,12 +6,12 @@ import {
   Dimensions,
   Image,
   StyleSheet,
-  Text,
   TouchableHighlight,
   View,
 } from 'react-native';
 
 import {
+  BCText,
   CenteredRow,
   Column,
 } from './../Components';
@@ -46,9 +46,11 @@ export default class MoodScreen extends React.Component<void, Props, State> {
 
   constructor(props: Props) {
     super(props);
+
+    const mood = this.props.navigation.state.params.moodValue;
     this.state = {
-      moodValue: this.props.navigation.state.params.moodValue,
-      scale: 0,
+      moodValue: mood,
+      scale: mood == null ? 0 : MAX_SCALE,
       selectedDate: this.props.navigation.state.params.selectedDate,
       timeElapsed: 0,
     };
@@ -82,17 +84,21 @@ export default class MoodScreen extends React.Component<void, Props, State> {
         </View>
         <View style={styles.container}>
           <View style={styles.content}>
-            <Text style={styles.text}>How are you</Text>
-            <Text style={styles.textHighlighted}>feeling</Text>
-            <Text style={styles.text}>today?</Text>
+            <BCText type={'PRIMARY'} style={styles.text}>How are you</BCText>
+            <BCText
+              type={'PRIMARY-HIGHLIGHTED'}
+              style={styles.textHighlighted}>
+              feeling
+            </BCText>
+            <BCText type={'PRIMARY'} style={styles.text}>today?</BCText>
           </View>
           <CenteredRow>
             {this._getMoodsList()}
           </CenteredRow>
           <CenteredRow>
-            <Text>
+            <BCText type={'HINT'}>
               {this.state.moodValue != null ? null : 'Hold face to set mood'}
-            </Text>
+            </BCText>
           </CenteredRow>
         </View>
       </AppView>
@@ -143,6 +149,7 @@ export default class MoodScreen extends React.Component<void, Props, State> {
       this.setState({
         timeElapsed: 0,
       });
+      this.props.navigation.state.params.onMoodValueChange(mood);
     } else {
       this.setState({
         moodValue: null,

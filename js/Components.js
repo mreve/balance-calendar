@@ -3,10 +3,11 @@
 import React from 'react';
 import {
   StyleSheet,
+  Text,
   View,
 } from 'react-native';
 
-type Props = {
+type RCProps = {
   children: any,
   fullHeight?: boolean,
   fullWidth?: boolean,
@@ -14,72 +15,97 @@ type Props = {
   width?: ?number,
 };
 
-export class CenteredRow extends React.Component<void, Props, void> {
+export class CenteredRow extends React.Component<void, RCProps, void> {
   render() {
-    const styleFromProps = get_style_from_props(this.props);
+    const styleFromRCProps = get_style_from_rcprops(this.props);
 
     return (
-      <View style={[styles.center, styles.row, styleFromProps]}>
+      <View style={[styles.center, styles.row, styleFromRCProps]}>
         {this.props.children}
       </View>
     );
   }
 }
 
-export class CenteredColumn extends React.Component<void, Props, void> {
+export class CenteredColumn extends React.Component<void, RCProps, void> {
   render() {
-    const styleFromProps = get_style_from_props(this.props);
+    const styleFromRCProps = get_style_from_rcprops(this.props);
 
     return (
-      <View style={[styles.center, styles.column, styleFromProps]}>
+      <View style={[styles.center, styles.column, styleFromRCProps]}>
         {this.props.children}
       </View>
     );
   }
 }
 
-export class Row extends React.Component<void, Props, void> {
+export class Row extends React.Component<void, RCProps, void> {
   render() {
-    const styleFromProps = get_style_from_props(this.props);
+    const styleFromRCProps = get_style_from_rcprops(this.props);
 
     return (
-      <View style={[styles.row, styleFromProps]}>
+      <View style={[styles.row, styleFromRCProps]}>
         {this.props.children}
       </View>
     );
   }
 }
 
-export class Column extends React.Component<void, Props, void> {
+export class Column extends React.Component<void, RCProps, void> {
   render() {
-    const styleFromProps = get_style_from_props(this.props);
+    const styleFromRCProps = get_style_from_rcprops(this.props);
 
     return (
-      <View style={[styles.column, styleFromProps]}>
+      <View style={[styles.column, styleFromRCProps]}>
         {this.props.children}
       </View>
     );
   }
 }
 
-function get_style_from_props(
-  props: Props,
+function get_style_from_rcprops(
+  props: RCProps,
 ): Object {
-  let styleFromProps = {};
+  let styleFromRCProps = {};
 
   if (props.width != null) {
-    styleFromProps.width = props.width;
+    styleFromRCProps.width = props.width;
   } else if (props.fullWidth === true) {
-    styleFromProps.width = '100%';
+    styleFromRCProps.width = '100%';
   }
 
   if (props.height != null) {
-    styleFromProps.height = props.height;
+    styleFromRCProps.height = props.height;
   } else if (props.fullHeight === true) {
-    styleFromProps.height = '100%';
+    styleFromRCProps.height = '100%';
   }
 
-  return styleFromProps;
+  return styleFromRCProps;
+}
+
+type TextProps = {
+  type: 'PRIMARY' | 'SECONDARY' | 'PRIMARY-HIGHLIGHTED' | 'HINT',
+  style: Object,
+}
+
+export class BCText extends React.Component<void, TextProps, void> {
+  render() {
+    let style = {fontFamily: 'SteelCityComic'};
+
+    switch (this.props.type) {
+      case 'PRIMARY': style.fontSize = 22; break;
+      case 'SECONDARY': style.fontSize = 18; break;
+      case 'PRIMARY-HIGHLIGHTED': style.fontSize = 26; break;
+      case 'HINT': style.fontSize = 16; break;
+      default: throw new Error('Unknown BCText type: ' + this.props.type);
+    }
+
+    return (
+      <Text style={[style, this.props.style]}>
+        {this.props.children}
+      </Text>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

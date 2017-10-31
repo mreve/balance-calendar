@@ -4,11 +4,16 @@ import React from 'react';
 import {
   Image,
   StyleSheet,
-  Text,
   TouchableHighlight,
   View,
 } from 'react-native';
 
+import {
+  BCText,
+  CenteredRow,
+  CenteredColumn,
+  Column,
+} from './../Components';
 import IconUtils from './../utils/IconUtils';
 
 type Props = {
@@ -41,26 +46,12 @@ export default class MoodSquare extends React.Component<void, Props, State> {
             {
               selectedDate: this.props.selectedDate,
               moodValue: this.state.moodValue,
+              onMoodValueChange: (mood) => this.onMoodValueChange(mood),
             },
           )}>
-          <View style={styles.innerContainer}>
-            <View style={styles.content}>
-              <Text style={styles.text}>How{'\''}s your</Text>
-              <Text style={styles.textHighlighted}>mood</Text>
-              <Text style={styles.text}>today</Text>
-            </View>
-            <View style={styles.imagery}>
-              <Image
-                source={IconUtils.getIconByName('MISERABLE')}
-                style={styles.icon}
-              />
-              <Text style={styles.textHighlighted}>?</Text>
-              <Image
-                source={IconUtils.getIconByName('AMAZING')}
-                style={styles.icon}
-              />
-            </View>
-          </View>
+          {this.state.moodValue == null
+            ? this._getContentForUnsetMood()
+            : this._getContentForSelectedMood(this.state.moodValue)}
         </TouchableHighlight>
       </View>
     );
@@ -73,6 +64,72 @@ export default class MoodSquare extends React.Component<void, Props, State> {
       moodValue: newMoodValue,
     });
   };
+
+  _getContentForUnsetMood = () => {
+    return (
+      <View style={styles.innerContainer}>
+        <View style={styles.content}>
+          <BCText
+            type={'PRIMARY'}
+            style={styles.text}>
+            How{'\''}s your
+          </BCText>
+          <BCText
+            type={'PRIMARY-HIGHLIGHTED'}
+            style={styles.textHighlighted}>
+            mood
+          </BCText>
+          <BCText
+            type={'PRIMARY'}
+            style={styles.text}>
+            today
+          </BCText>
+        </View>
+        <View style={styles.imagery}>
+          <Image
+            source={IconUtils.getIconByName('MISERABLE')}
+            style={styles.icon}
+          />
+          <BCText
+            type={'PRIMARY-HIGHLIGHTED'}
+            style={styles.textHighlighted}>
+            ?
+          </BCText>
+          <Image
+            source={IconUtils.getIconByName('AMAZING')}
+            style={styles.icon}
+          />
+        </View>
+      </View>
+    );
+  };
+
+  _getContentForSelectedMood = (
+    mood: string,
+  ) => {
+    return (
+      <View style={styles.innerContainer}>
+        <CenteredRow fullWidth={true}>
+          <Image
+            source={IconUtils.getIconByName(mood)}
+            style={styles.largeIcon}
+          />
+        </CenteredRow>
+        <View>
+          <CenteredRow fullWidth={true}>
+            <BCText type={'SECONDARY'}>
+              mood today:
+            </BCText>
+          </CenteredRow>
+          <CenteredRow fullWidth={true}>
+            <BCText type={'PRIMARY'}>
+              {mood}
+            </BCText>
+          </CenteredRow>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -87,6 +144,9 @@ const styles = StyleSheet.create({
   },
   content: {
     alignItems: 'center',
+  },
+  contentWithSetMood: {
+
   },
   text: {
     fontSize: 22,
@@ -104,4 +164,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 12,
   },
+  largeIcon: {
+    height: 64,
+    width: 64,
+  }
 });
